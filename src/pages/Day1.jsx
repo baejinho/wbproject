@@ -24,10 +24,14 @@ import {
 
 
 import "./Day1.scss";  
+import WBButton from './Component/WBButton';
  
 
 export default class Day1 extends Component {
     
+  buttonClick = ()=>{
+    alert("Button TEST");
+  }
 
   render() { 
 
@@ -84,7 +88,9 @@ export default class Day1 extends Component {
             }}>CSS Sample</Button>
           </Link>
           
-
+            <br />
+            <br />
+            <WBButton onClick={this.buttonClick} buttonName="테스트"/>
         </div>  
 
      </div>);
