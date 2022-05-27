@@ -18,6 +18,7 @@ import { createBrowserHistory } from "history";
 import HomePage from "./pages/Home"; 
 import Day2 from "./pages/Day2";
 import Day2StateSample from "./pages/Day2StateSample";
+import MyPage from "./pages/MyPage";
 import Day2DBSample from "./pages/Day2DBSample";
 import Day2CSSSample from "./pages/Day2CSSSample";
 import Day2Schedule from "./pages/Day2Schedule";
@@ -88,6 +89,14 @@ class Header extends Component {
                 }}>
           
             Day2~6
+          </div></Link>
+          <Link to="/mypage"><div style={{width:160, marginTop: 10, color: 
+           color, textAlign:"center", fontSize:13, cursor:"pointer", fontFamily:"Mark Pro Heavy", letterSpacing:5}}
+              onClick={()=>{
+                 
+                }}>
+          
+            My Page
           </div></Link>
         
           
@@ -213,6 +222,10 @@ class App extends Component {
     
                  <Route exact path="/day2statesample" 
                   element={<Day2StateSample/>} 
+                 />  
+
+                <Route exact path="/mypage" 
+                  element={<MyPage/>} 
                  />  
     
                  <Route exact path="/day2dbsample" 
