@@ -26,6 +26,10 @@ import Day2Diary from "./pages/Day2Diary";
 import Day2Photo from "./pages/Day2Photo";
 import Day2MoneyManage from "./pages/Day2MoneyManage";
 
+import Day2Login from "./pages/Day2Login";
+import Day2Lunch from "./pages/Day2Lunch";
+import Day2Cardview from "./pages/Day2Cardview";
+
 import Day3 from "./pages/Day3";
 import Day1 from "./pages/Day1";
    
@@ -253,9 +257,15 @@ class App extends Component {
                       element={<Day2Photo/>}  
                            
                              /> 
-                            
-    
-    
+                  <Route exact path="/day2login"  
+                  element={<Day2Login/>}  
+                  />    
+                  <Route exact path="/day2lunch"  
+                  element={<Day2Lunch/>}  
+                  />    
+                  <Route exact path="/day2cardview"  
+                             element={<Day2Cardview/>}  
+                             /> 
     
                  <Route exact path="/day3" 
                    element={<Day3/>}  

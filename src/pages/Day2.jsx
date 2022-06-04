@@ -67,6 +67,25 @@ export default class Day2 extends Component {
             }}>Photo Album Sample</Button>
             </Link>
           </div>  
+
+          <div style={{fontFamily: "Mark Pro Heavy", fontSize: 30, fontWeight:"bold", marginTop:20 }}>웰컴 프로젝트 소스 샘플 보기</div>
+          <div style={{ fontSize: 20, marginTop:20}}>
+          <Link to="/day2login">
+            <Button style={{}}  onClick={()=>{
+              
+            }}>Auth 2.0 로그인 샘플</Button>
+          </Link>
+          <Link to="/day2lunch">
+            <Button style={{}}  onClick={()=>{
+              
+            }}>점심메뉴 고르기 및 지도 적용</Button>
+          </Link>
+          <Link to="/day2cardview">
+            <Button style={{}}  onClick={()=>{
+              
+            }}>카드뷰 상품 리스트 화면 만들기</Button>
+          </Link>
+          </div>
      </div>);
   }
 
