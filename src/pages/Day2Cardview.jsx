@@ -20,7 +20,8 @@ import {
 
 
 
-import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
+import { EditOutlined, EllipsisOutlined, SettingOutlined
+,DeleteOutlined } from '@ant-design/icons';
  
 
 import 'antd/dist/antd.css';
@@ -66,10 +67,149 @@ export default class Day2Cardview extends Component {
     return (
       <div style={{padding:150, color:"white"}}>
         <div>카드뷰 상품 목록 만들기</div>
-         
-        <div style={{display:"flex"}}>
 
-        {this.state.menuList&&this.state.menuList.map((item)=>{
+        <Modal 
+          style={{backgroundColor:"transparent"}}
+          visible={this.state.isProductModal}
+          footer={null}
+          onCancel={()=>{
+            this.setState({isProductModal:false})
+          }} 
+          bodyStyle={{backgroundColor:"black", border:"1px solid white"}}
+           
+        > 
+          <div>
+          <div style={{color:"white"}}>메뉴 입력하기</div>
+          <Card
+          style={{ width: 300, marginLeft:5 }}
+          cover={
+            <img
+              alt="example"
+              src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+            />
+          }
+          actions={[
+            
+          ]}
+          >
+            <Meta
+              avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
+              title={<Input
+             style={{width: 150}}
+             value={this.state.lunchName}
+             onChange={(e)=>{
+               this.setState({lunchName:e.target.value})
+             }}
+             placeholder="점심 메뉴명"
+             />}
+              description={<Input
+             style={{width: 150}}
+             value={this.state.lunchAmount}
+             onChange={(e)=>{
+               this.setState({lunchAmount:e.target.value})
+             }}
+             placeholder="점심 메뉴 가격"
+             />}
+            />
+          </Card>
+          <Button onClick={()=>{
+              let menuList = this.state.menuList;
+
+              menuList.push({lunchName:this.state.lunchName,
+              lunchAmount:this.state.lunchAmount});
+
+              this.setState({menuList, lunchName:"", lunchAmount:0,
+              isProductModal:false})
+            }}>
+            저장하기
+          </Button>
+          </div>
+        </Modal>
+
+
+        <Modal 
+          style={{backgroundColor:"transparent"}}
+          visible={this.state.isProductModifyModal}
+          footer={null}
+          onCancel={()=>{
+            this.setState({isProductModifyModal:false})
+          }} 
+          bodyStyle={{backgroundColor:"black", border:"1px solid white"}}
+           
+        > 
+          <div>
+          <div style={{color:"white"}}>메뉴 수정하기 </div>
+          <Card
+          style={{ width: 300, marginLeft:5 }}
+          cover={
+            <img
+              alt="example"
+              src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+            />
+          }
+          actions={[
+            
+          ]}
+          >
+            <Meta
+              avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
+              title={<Input
+             style={{width: 150}}
+             value={this.state.lunchName}
+             onChange={(e)=>{
+               this.setState({lunchName:e.target.value})
+             }}
+             placeholder="점심 메뉴명"
+             />}
+              description={<Input
+             style={{width: 150}}
+             value={this.state.lunchAmount}
+             onChange={(e)=>{
+               this.setState({lunchAmount:e.target.value})
+             }}
+             placeholder="점심 메뉴 가격"
+             />}
+            />
+          </Card>
+          <Button onClick={()=>{
+            console.log(this.state.curIndex);
+            let menuList = this.state.menuList;
+            let menuObj = menuList[this.state.curIndex];
+            console.log(menuObj);
+            menuObj.lunchName = this.state.lunchName;
+            menuObj.lunchAmount = this.state.lunchAmount;
+            
+            menuList[this.state.curIndex] = menuObj;
+
+            this.setState({menuList, lunchName:"", lunchAmount:0
+            , isProductModifyModal:false})
+            /*
+              let menuList = this.state.menuList;
+
+              menuList.push({lunchName:this.state.lunchName,
+              lunchAmount:this.state.lunchAmount});
+
+              this.setState({menuList, lunchName:"", lunchAmount:0,
+              isProductModifyModal:false})
+              */
+            }}>
+            수정하기
+          </Button>
+          </div>
+        </Modal>
+
+        <div style={{display:"flex", justifyContent:"flex-end"
+        , width:800, margin:"0px auto"}}>
+            <Button onClick={()=>{
+              this.setState({isProductModal:true})
+            }}>
+            상품 입력
+            </Button>
+        </div>
+        <div style={{display:"flex", flexWrap:"wrap"}}>
+          
+
+        {this.state.menuList&&this.state.menuList.map((item,index)=>{
           return <Card
           style={{ width: 300, marginLeft:5 }}
           cover={
@@ -79,8 +219,25 @@ export default class Day2Cardview extends Component {
             />
           }
           actions={[
-            <SettingOutlined key="setting" />,
-            <EditOutlined key="edit" />,
+            <DeleteOutlined key="delete"
+              onClick={()=>{
+                let menuList = this.state.menuList;
+
+                menuList.splice(index,1);
+
+                this.setState({menuList});
+
+              }}
+             />,
+            <EditOutlined key="edit" 
+              onClick={()=>{
+                this.setState({
+                  isProductModifyModal:true, 
+                  curIndex:index,
+                  lunchName:item.lunchName,
+                  lunchAmount:item.lunchAmount})
+              }}
+            />,
             <EllipsisOutlined key="ellipsis" />,
           ]}
         >

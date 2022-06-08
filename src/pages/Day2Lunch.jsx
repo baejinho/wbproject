@@ -37,7 +37,17 @@ export default class Day2Lunch extends Component {
     lunchLng:126.970833, //경도
     isMenuModal:false,
     isMapModal:false,
-    menuList:[]
+    menuList:[{lunchName:'치킨', 
+    lunchLocation:'https://map.naver.com/v5/search/%EC%B9%98%ED%82%A8%EC%A7%91%EC%97%AD%EC%82%BC/place/35734815?placePath=%3Fentry=pll%26from=nx%26fromNxList=true&placeSearchOption=entry=pll%26fromNxList=true',
+    lunchLat: 37.554712, 
+    lunchLng: 126.970813
+  },{lunchName:'프리모바치오바치 강남점', 
+  lunchLocation:'https://map.naver.com/v5/search/%ED%94%BC%EC%9E%90/place/18407600?c=14139657.4259043,4509008.2411027,15,0,0,0,dh',
+  lunchLat: 37.554722, 
+  lunchLng: 126.970933},{lunchName:'사람사는 고깃집 김일도', 
+  lunchLocation:' https://map.naver.com/v5/search/%EA%B0%95%EB%82%A8%EB%A7%9B%EC%A7%91/place/1972037992?placePath=%3Fentry=pll%26from=nx%26fromNxList=true&placeSearchOption=entry=pll%26fromNxList=true',
+  lunchLat: 37.554732, 
+  lunchLng: 126.970533}]
   } 
 
   componentDidMount() { 
@@ -45,50 +55,24 @@ export default class Day2Lunch extends Component {
   } 
 
   load=()=>{
-    let menuList = [];
-    menuList.push({lunchName:'치킨', 
-      lunchLocation:'https://map.naver.com/v5/search/%EC%B9%98%ED%82%A8%EC%A7%91%EC%97%AD%EC%82%BC/place/35734815?placePath=%3Fentry=pll%26from=nx%26fromNxList=true&placeSearchOption=entry=pll%26fromNxList=true',
-      lunchLat: 37.554722, 
-      lunchLng: 126.970833
-    })
-    menuList.push({lunchName:'프리모바치오바치 강남점', 
-      lunchLocation:'https://map.naver.com/v5/search/%ED%94%BC%EC%9E%90/place/18407600?c=14139657.4259043,4509008.2411027,15,0,0,0,dh',
-      lunchLat: 37.554722, 
-      lunchLng: 126.970833})
-    menuList.push({lunchName:'사람사는 고깃집 김일도', 
-    lunchLocation:' https://map.naver.com/v5/search/%EA%B0%95%EB%82%A8%EB%A7%9B%EC%A7%91/place/1972037992?placePath=%3Fentry=pll%26from=nx%26fromNxList=true&placeSearchOption=entry=pll%26fromNxList=true',
-    lunchLat: 37.554722, 
-    lunchLng: 126.970833})
+    let menuList = this.state.menuList; 
 
-    marker.push(<Marker
-      // icon={""}
-      key={0}
-      position={{ lat: 37.554722, lng: 126.970833 }}
-      animation={2}
-      onClick={() => {
-        //alert('hello');
-      }}
-    />)
-    marker.push(<Marker
-      // icon={""}
-      key={0}
-      position={{ lat: 37.554722, lng: 127.970833 }}
-      animation={2}
-      onClick={() => {
-        //alert('hello');
-      }}
-    />)
-    marker.push(<Marker
-      // icon={""}
-      key={0}
-      position={{ lat: 37.254722, lng: 126.970833 }}
-      animation={2}
-      onClick={() => {
-        //alert('hello');
-      }}
-    />)
+    marker = [];
+    
+    menuList.map((item, index)=>{
+      marker.push(<Marker
+        // icon={""}
+        key={index}
+        position={{ lat: item.lunchLat, lng: item.lunchLng }}
+        animation={2}
+        onClick={() => {
+          //alert('hello');
+        }}
+      />)
+    });
+    
 
-    this.setState({menuList});
+    this.setState({menuList, loading:true});
   }
 
   save=()=>{
@@ -116,25 +100,28 @@ export default class Day2Lunch extends Component {
         >
 
 <div>
-        <RenderAfterNavermapsLoaded
-      ncpClientId={NAVER_API_KEY} // 자신의 네이버 계정에서 발급받은 Client ID
-      error={<p>Maps Load Error</p>}
-      loading={<p>Maps Loading...</p>}
-    >
-      <NaverMap
-        mapDivId={"map"} // default: react-naver-map
-        style={{
-          width: 600, // 네이버지도 가로 길이
-          height: 600 // 네이버지도 세로 길이
-        }}
-        defaultCenter={{ lat: 37.554722, lng: 126.970833 }} // 지도 초기 위치
-        zoom={12}
-      >
-       {marker}
-        
+    {this.state.loading?
+      <RenderAfterNavermapsLoaded
+            ncpClientId={NAVER_API_KEY} // 자신의 네이버 계정에서 발급받은 Client ID
+            error={<p>Maps Load Error</p>}
+            loading={<p>Maps Loading...</p>}
+          >
+            <NaverMap
+              mapDivId={"map"} // default: react-naver-map
+              style={{
+                width: 600, // 네이버지도 가로 길이
+                height: 600 // 네이버지도 세로 길이
+              }}
+              defaultCenter={{ lat: 37.554722, lng: 126.970833 }} // 지도 초기 위치
+              zoom={15}
+            >
+            {marker}
+              
 
-      </NaverMap>
-    </RenderAfterNavermapsLoaded>
+            </NaverMap>
+          </RenderAfterNavermapsLoaded>:null
+    }
+       
         </div>
         </Modal>
 
@@ -187,9 +174,18 @@ export default class Day2Lunch extends Component {
                     <div 
                     onClick={()=>{
                       let menuList = this.state.menuList;
-                      menuList.push({lunchName:this.state.lunchName, lunchLocation:this.state.lunchLocation})
+                      menuList.push(
+                        {lunchName:this.state.lunchName
+                        , lunchLocation:this.state.lunchLocation
+                        , lunchLat : this.state.lunchLat
+                        , lunchLng : this.state.lunchLng
+                        }
+                        )
 
-                      this.setState({menuList, lunchName:"", lunchLocation:"", isMenuModal:false})
+                      this.setState({menuList, lunchName:"", lunchLocation:"",lunchLat:37.554722, 
+    lunchLng:126.970833, isMenuModal:false, loading:false},()=>{
+          this.load();
+    })
                     }}
                     style={{cursor:"pointer",fontSize:18,color:"black",fontWeight:"bold",width:208, height:50, display:"flex", justifyContent:"center", alignItems:"center", background:"#00ff70"}}>
                       저장하기
