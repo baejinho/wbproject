@@ -106,7 +106,7 @@ export default class Day2Login extends Component {
   }
 
   render() { 
-    const REST_API_KEY = "0d5077c2ec06ff84dd8271dfc871b638";
+    const REST_API_KEY = "dad8d385bf212be778f49ff44953c938";
     const REDIRECT_URI = "http://localhost:3000/oauth/kakao/callback";
     const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
   
