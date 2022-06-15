@@ -260,6 +260,10 @@ class App extends Component {
                   <Route exact path="/day2login"  
                   element={<Day2Login/>}  
                   />    
+                   <Route exact path="/oauth/kakao/callback"  
+                  element={<Day2Login/>}  
+                  />    
+
                   <Route exact path="/day2lunch"  
                   element={<Day2Lunch/>}  
                   />    
