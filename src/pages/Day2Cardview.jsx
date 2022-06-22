@@ -26,7 +26,8 @@ import { EditOutlined, EllipsisOutlined, SettingOutlined
 
 import 'antd/dist/antd.css';
 import "./Day2Cardview.scss";  
- 
+
+import axios from 'axios';
 import moment from "moment";
 
 import _ from "lodash";
@@ -48,6 +49,8 @@ export default class Day2Cardview extends Component {
   } 
 
   load=()=>{
+
+    /*
     let menuList = [];
     menuList.push({lunchAmount:4000,lunchName:'치킨', lunchCount :0,lunchLocation:'https://map.naver.com/v5/search/%EC%B9%98%ED%82%A8%EC%A7%91%EC%97%AD%EC%82%BC/place/35734815?placePath=%3Fentry=pll%26from=nx%26fromNxList=true&placeSearchOption=entry=pll%26fromNxList=true'})
     menuList.push({lunchAmount:8000,lunchName:'프리모바치오바치 강남점',lunchCount :0, lunchLocation:'https://map.naver.com/v5/search/%ED%94%BC%EC%9E%90/place/18407600?c=14139657.4259043,4509008.2411027,15,0,0,0,dh'})
@@ -55,10 +58,42 @@ export default class Day2Cardview extends Component {
 
 
     this.setState({menuList});
+    */
+
+    axios.get("http://54.180.123.35:8080/cardmenus")
+        .then( response => {
+            console.log(response);
+            console.log(response.data);
+            this.setState({menuList:response.data})
+        })
+        .catch( err => {console.log(err)});
   }
 
-  save=()=>{
-      
+  insertSave=()=>{
+   
+
+    axios.post("http://54.180.123.35:8080/cardmenu/insert",{
+      foodId:this.state.menuList.length,
+      lunchName:this.state.lunchName,
+      lunchAmount:this.state.lunchAmount,
+      lunchCount :0})
+        .then( response => {
+            console.log(response);
+            console.log(response.data);
+            if(response.data==1){
+
+            this.setState({ lunchName:"", lunchAmount:0,
+              isProductModal:false}, ()=>{
+                this.load();
+              })
+             
+            }else{
+              Modal.info({title:"에러입니다"});
+            }
+            
+        })
+        .catch( err => {console.log(err)});
+
 
   }
 
@@ -113,14 +148,7 @@ export default class Day2Cardview extends Component {
             />
           </Card>
           <Button onClick={()=>{
-              let menuList = this.state.menuList;
-
-              menuList.push({lunchName:this.state.lunchName,
-              lunchAmount:this.state.lunchAmount,
-              lunchCount :0});
-
-              this.setState({menuList, lunchName:"", lunchAmount:0,
-              isProductModal:false})
+              this.insertSave();
             }}>
             저장하기
           </Button>
