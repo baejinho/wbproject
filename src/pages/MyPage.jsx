@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+import axios from "axios";
 import {
   Upload,
   Icon,
@@ -18,40 +19,50 @@ import {
  
 import 'antd/dist/antd.css';
 import "./MyPage.scss";  
+import { LeftCircleFilled } from '@ant-design/icons';
  
 const dataSource = [
   { 
     foodName: '갈비탕',
-    foodLike: 32,
+    likes: 32,
+    amount: 10000,
     foodAddress: '강남구'
   },
   { 
     foodName: '피자',
-    foodLike: 10,
+    likes: 10,
+    amount: 10000,
     foodAddress: '강남구'
   },
   { 
     foodName: '치킨',
-    foodLike: 50,
+    likes: 50,
+    amount: 10000,
     foodAddress: '강남구'
   },
   { 
     foodName: '파스타',
-    foodLike: 10,
+    likes: 10,
+    amount: 10000,
     foodAddress: '노원'
   }
 ];
 
 const columns = [
   {
-    title: '음식점',
+    title: '음식메뉴',
     dataIndex: 'foodName',
     key: 'foodName',
   },
   {
+    title: '음식가격',
+    dataIndex: 'amount',
+    key: 'amount',
+  },
+  {
     title: '좋아요',
-    dataIndex: 'foodLike',
-    key: 'foodLike',
+    dataIndex: 'likes',
+    key: 'likes',
   },
   {
     title: '음식점 주소',
@@ -69,8 +80,24 @@ export default class MyPage extends Component {
 
   componentDidMount() { 
 
-    this.setState({data:dataSource})
+    
+
+    this.setState({data:dataSource}, ()=>{
+      this.load();
+    })
   } 
+
+  load = async () =>{
+
+     
+    axios.get("http://54.180.123.35:8080/menus")
+        .then( response => {
+            console.log(response);
+            console.log(response.data);
+            this.setState({data:response.data})
+        })
+        .catch( err => {console.log(err)});
+  }
 
   filter = () =>{
     let data = dataSource;
